@@ -1,0 +1,4 @@
+Dudas de desarrollo:
+
+1. Las N posibles respuestas, se refiere a respuestas correctas en la pregunta o posibles opciones a seleccionar.
+2. Que se guarda en la respuesta, la opcion o el contenido de la opcion.
