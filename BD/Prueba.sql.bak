@@ -290,7 +290,7 @@ INNER JOIN preguntas ON prueba.id_prueba = preguntas.id_prueba;
 SELECT * FROM preguntas;
 
 --Registrar respuesta de candidato
-UPDATE Customers
-SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+UPDATE respuestas
+SET respuestas.respuesta = '', City= 'Frankfurt'
 WHERE CustomerID = 1;
 

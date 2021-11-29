@@ -289,6 +289,9 @@ INNER JOIN preguntas ON prueba.id_prueba = preguntas.id_prueba;
 -- Mostrar respuestas
 SELECT * FROM preguntas;
 
+-- Mostrar respuestas
+SELECT id_
+
 --Registrar respuesta de candidato
 UPDATE respuestas
 SET respuestas.respuesta = '', City= 'Frankfurt'
