@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS seleccion_personal;
+
 CREATE DATABASE seleccion_personal; 
 
 use seleccion_personal; 
@@ -5,23 +7,23 @@ use seleccion_personal;
 CREATE TABLE candidato 
  (
  id_candidato INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
- identificacion VARCHAR(20) not null,
+ identificacion VARCHAR(50) not null,
  nombre VARCHAR (50),
  direccion VARCHAR (100),
  telefono VARCHAR (20),
- numero_hijos INT (50),
- genero VARCHAR (1),
+ hijos INT,
+ genero VARCHAR (10),
  estado_civil VARCHAR (20),
- numero_mascotas INT,
- nivel_escolaridad VARCHAR (20)
+ mascotas INT,
+ escolaridad VARCHAR (20)
  );
  
  CREATE TABLE empresa 
  (
  id_empresa INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
- nit VARCHAR(20) not null,
+ nit VARCHAR(20),
+ empresa VARCHAR (50),
  representante VARCHAR (50),
- nombre_empresa VARCHAR (50),
  direccion VARCHAR (100),
  telefono VARCHAR (20)
  );
@@ -29,8 +31,8 @@ CREATE TABLE candidato
  CREATE TABLE prueba 
  (
  id_prueba INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
- fecha_star DATE,
- fecha_end DATE,
+ fecha_inicio DATE,
+ fecha_final DATE,
  cargo VARCHAR (20),
  id_empresa INT NOT NULL,
  FOREIGN KEY (id_empresa) REFERENCES empresa(id_empresa)
@@ -38,6 +40,7 @@ CREATE TABLE candidato
  
   CREATE TABLE intentos
  (
+ id_intento INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
  id_candidato INT NOT NULL,
  id_prueba INT NOT NULL,
  FOREIGN KEY (id_candidato) REFERENCES candidato(id_candidato),
@@ -47,7 +50,8 @@ CREATE TABLE candidato
  CREATE TABLE preguntas
  (
  id_pregunta INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
- pregunta VARCHAR (200),
+ numero INT,
+ pregunta VARCHAR (500),
  opcion_a VARCHAR (200),
  opcion_b VARCHAR (200),
  opcion_c VARCHAR (200),
@@ -61,10 +65,12 @@ CREATE TABLE candidato
  id_respuesta INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
  respuesta VARCHAR (200),
  id_pregunta INT NOT NULL,
- FOREIGN KEY (id_pregunta) REFERENCES preguntas(id_pregunta)
+ id_intento INT NOT NULL,
+ FOREIGN KEY (id_pregunta) REFERENCES preguntas(id_pregunta),
+ FOREIGN KEY (id_intento) REFERENCES intentos(id_intento)
  );
  
- INSERT INTO candidato ( identificacion, nombre, direccion, telefono, numero_hijos, genero, estado_civil, numero_mascotas, nivel_escolaridad) VALUES
+ INSERT INTO candidato ( identificacion, nombre, direccion, telefono, hijos, genero, estado_civil, mascotas, escolaridad) VALUES
 ('201805744', 'ADRIANA CAROLINA HERNANDEZ MONTERROZA', 'Calle 10 No. 9 - 78  Centro', '3112572665', 0, 'F', 'Soltero(a)', 0, 'Tecnico'),
 ('897796057', 'ALEJANDRO ABONDANO ACEVEDO', 'Carrera 56A No. 51 - 81', '3114572983', 1, 'M', 'Casado(a)', 3, 'Tecnologo'),
 ('395816752', 'ANGELICA LISSETH BLANCO CONCHA', 'Carrera 22 No. 17-31', '3111573770', 2, 'F', 'Viudo(a)', 0, 'Superior'),
@@ -85,7 +91,7 @@ CREATE TABLE candidato
 ('609717225', 'IVONNE JOULIETTE BARRERA LOPEZ', 'Calle 33B  No. 38 - 42  Barrio Barzal', '3111579455', 0, 'F', 'Viudo(a)', 4, 'Posgrado'),
 ('257005875', 'JORGE MARIO OROZCO DUSSÁN', 'Calle 16 No. 23 - 57 piso 4  Edificio Autoservicio Abraham Delgado', '3111579155', 1, 'M', 'Casado(a)', 0, 'Bachiller');
 
-INSERT INTO empresa ( nit, nombre_empresa, representante, direccion, telefono) VALUES
+INSERT INTO empresa ( nit, empresa, representante, direccion, telefono) VALUES
 ( '496337751', 'IKEA', 'ACEVEDO MANRÍQUEZ MARÍA MIREYA', 'Calle 10 No. 9 - 78  Centro', '3127906861'),
 ( '638715039', 'CANON', 'ACEVEDO MEJÍA ENRIQUE', 'Carrera 56A No. 51 - 81', '3139866373'),
 ( '521523795', 'LEGO', 'ACOSTA CANTO TOMÁS JOSÉ', 'Carrera 22 No. 17-31', '3119791059'),
@@ -106,7 +112,7 @@ INSERT INTO empresa ( nit, nombre_empresa, representante, direccion, telefono) V
 ( '686328344', 'Paf Paf', 'JUAN PABLO MANTILLA OLIVEROS', 'Calle 33B  No. 38 - 42  Barrio Barzal', '3146691172'),
 ( '542335059', 'Coatlicue', 'LETICIA RODRÍGUEZ MONTES', 'Calle 16 No. 23 - 57 piso 4  Edificio Autoservicio Abraham Delgado', '3198353393');
 
-INSERT INTO prueba ( fecha_star, fecha_end, cargo, id_empresa) VALUES
+INSERT INTO prueba ( fecha_inicio, fecha_final, cargo, id_empresa) VALUES
 ( '2021-03-01', '2021-03-02', 'Lider Componente', 1),
 ( '2021-11-03', '2021-11-04', 'Soporte TI', 2),
 ( '2020-12-11', '2021-12-12', 'Auxiliar Contable', 3);
@@ -143,7 +149,7 @@ INSERT INTO intentos ( id_candidato, id_prueba) VALUES
 ( 15, 2),
 ( 7, 1);
 
-INSERT INTO preguntas ( pregunta, opcion_a, opcion_b, opcion_c, opcion_d, id_prueba) VALUES
+INSERT INTO preguntas ( numero, pregunta, opcion_a, opcion_b, opcion_c, opcion_d, id_prueba) VALUES
 ( '¿Cuál es la letra que más se repite?: a b a z m a b a z m a b a z m a b a z a b a m b a', 'b', 'z', 'a', 'm', 1),
 ( 'Señala el sinónimo correspondiente de la palabra ESPAÑOL', 'Católico', 'Peninsular', 'Patriótico', 'Hispano', 1),
 ( 'Sigue la secuencia 6, 1, 8, 3, 10, ?', '7', '4', '12', '5', 1),
@@ -209,88 +215,71 @@ INSERT INTO preguntas ( pregunta, opcion_a, opcion_b, opcion_c, opcion_d, id_pru
 ( 'Sigue la secuencia: S C M V ...', 'G', 'F', 'I', 'H', 3),
 ( 'Señale la palabra que no pertenece al grupo:', 'Sincero', 'Franco', 'Veraz', 'Falso', 3);
 
-INSERT INTO respuestas ( respuesta, id_pregunta) VALUES
-( 'a', 1),
-( 'Hispano', 2),
-( '5', 3),
-( 'Tamiz', 4),
-( 'Público', 5),
-( 'Fusionar', 6),
-( 'Perfecto', 7),
-( '-, -', 8),
-( 'Emisor', 9),
-( 'K', 10),
-( '32', 11),
-( '12, +, 5, 72', 12),
-( 'Pregunta – Resolver', 13),
-( 'K', 14),
-( 'Poeta - Estatua', 15),
-( 'NN', 16),
-( 'B.', 17),
-( 'Comentario', 18),
-( 'zapa, zapata, zapatear, zapatería, zapatero, zapato', 19),
-( '6224242242', 20),
-( 'H', 21),
-( '22o', 22),
-( '51', 23),
-( '2', 24),
-( '4', 25),
-( 'D', 26),
-( '13', 27),
-( 'Guillotina – Soga', 28),
-( '3', 29),
-( 'hábil, habilidad, habilidoso, habilitación, habilitado, habilitar', 30),
-( 't, t', 31),
-( 'Y', 32),
-( '54038727', 33),
-( 'Esceder', 34),
-( 'Monge', 35),
-( '2471', 36),
-( 'Disfráz', 37),
-( 'E', 38),
-( '34', 39),
-( 'Suma', 40),
-( 'cicatricera', 41),
-( 'Todos', 42),
-( 'Conservación', 43),
-( 'Adornos', 44),
-( 'Denigrante', 45),
-( 'Bastilla – Museo', 46),
-( '-2', 47),
-( '180m', 48),
-( '81', 49),
-( 'moreno', 50),
-( '37', 51),
-( 'Cabreo', 52),
-( 'Material', 53),
-( '22', 54),
-( '2.04', 55),
-( 'Paraguas - Inundación', 56),
-( 'Mimica', 57),
-( 'O', 58),
-( 'Diávolo', 59),
-( 'Consonante - Asolarse', 60),
-( 'Impostor', 61),
-( '44, 83', 62),
-( 'F', 63),
-( 'Falso', 64);
+INSERT INTO respuestas ( respuesta, id_pregunta, id_intento) VALUES
+( 'a', 1, 1),
+( 'Hispano', 2, 1),
+( '5', 3, 1),
+( 'Tamiz', 4, 1),
+( 'Público', 5, 1),
+( 'Fusionar', 6, 1),
+( 'Perfecto', 7, 1),
+( '-, -', 8, 1),
+( 'Emisor', 9, 1),
+( 'K', 10, 1),
+( '32', 11, 1),
+( '12, +, 5, 72', 12, 1),
+( 'Pregunta – Resolver', 13, 1),
+( 'K', 14, 1),
+( 'Poeta - Estatua', 15, 1),
+( 'NN', 16, 1),
+( 'B.', 17, 1),
+( 'Comentario', 18, 1),
+( 'zapa, zapata, zapatear, zapatería, zapatero, zapato', 19, 1),
+( '6224242242', 20, 1),
+( 'H', 21, 1),
+( '22o', 22, 1),
+( '51', 23, 1),
+( '2', 24, 1),
+( '4', 25, 1),
+( 'D', 26, 1),
+( '13', 27, 1),
+( 'Guillotina – Soga', 28, 1),
+( '3', 29, 1),
+( 'hábil, habilidad, habilidoso, habilitación, habilitado, habilitar', 30, 1),
+( 't, t', 31, 1),
+( 'Y', 32, 1),
+( '54038727', 33, 1),
+( 'Esceder', 34, 1),
+( 'Monge', 35, 1),
+( '2471', 36, 1),
+( 'Disfráz', 37, 1),
+( 'E', 38, 1),
+( '34', 39, 1),
+( 'Suma', 40, 1),
+( 'cicatricera', 41, 1),
+( 'Todos', 42, 1),
+( 'Conservación', 43, 1),
+( 'Adornos', 44, 1),
+( 'Denigrante', 45, 1),
+( 'Bastilla – Museo', 46, 1),
+( '-2', 47, 1),
+( '180m', 48, 1),
+( '81', 49, 1),
+( 'moreno', 50, 1),
+( '37', 51, 1),
+( 'Cabreo', 52, 1),
+( 'Material', 53, 1),
+( '22', 54, 1),
+( '2.04', 55, 1),
+( 'Paraguas - Inundación', 56, 1),
+( 'Mimica', 57, 1),
+( 'O', 58, 1),
+( 'Diávolo', 59, 1),
+( 'Consonante - Asolarse', 60, 1),
+( 'Impostor', 61, 2),
+( '44, 83', 62, 2),
+( 'F', 63, 3),
+( 'Falso', 64, 3);
 
--- Consulta de numero de pruebas de candidato
-SELECT candidato.identificacion, candidato.nombre, COUNT(candidato.identificacion) AS numero_pruebas
-FROM candidato
-INNER JOIN intentos ON candidato.id_candidato = intentos.id_candidato
-GROUP BY candidato.identificacion;
 
--- Muestra preguntas de una prueba
-SELECT prueba.id_prueba, prueba.cargo, preguntas.id_pregunta, preguntas.pregunta
-FROM prueba
-INNER JOIN preguntas ON prueba.id_prueba = preguntas.id_prueba;
-
--- Mostrar respuestas
-SELECT * FROM preguntas;
-
---Registrar respuesta de candidato
-UPDATE respuestas
-SET respuestas.respuesta = '', City= 'Frankfurt'
-WHERE CustomerID = 1;
 
