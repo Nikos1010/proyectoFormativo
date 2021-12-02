@@ -4,13 +4,11 @@ FROM candidato
 INNER JOIN intentos ON candidato.id_candidato = intentos.id_candidato
 GROUP BY candidato.identificacion;
 
--- Muestra preguntas de una prueba
-SELECT prueba.id_prueba, prueba.cargo, preguntas.id_pregunta, preguntas.pregunta
+-- Muestra preguntas y opciones de respuesta de una prueba
+SELECT prueba.id_prueba, prueba.cargo, preguntas.numero, preguntas.pregunta, preguntas.opcion_a, preguntas.opcion_b, preguntas.opcion_c, preguntas.opcion_d 
 FROM prueba
 INNER JOIN preguntas ON prueba.id_prueba = preguntas.id_prueba;
 
--- Mostrar respuestas
-SELECT * FROM preguntas;
 
 -- Insertar respuestas de pregunta del candidato **
 -- ¿¿¿??? Revisar despues
@@ -18,6 +16,7 @@ INSERT INTO respuestas ( respuesta, id_pregunta, id_intento) VALUES
 ( 'a', 1, 1), 
 
 -- Informacion de la prueba presentada
+--Crear filtro para seleccionar la prueba (ej: 1, que muestre candidatos que presentaron la prueba 1)
 SELECT prueba.id_prueba, prueba.fecha_inicio, prueba.fecha_final, candidato.nombre, empresa.empresa, prueba.cargo
 FROM prueba
 INNER JOIN empresa ON prueba.id_empresa = empresa.id_empresa
@@ -32,7 +31,6 @@ INNER JOIN respuestas ON preguntas.id_pregunta = respuestas.id_respuesta
 INNER JOIN intentos ON prueba.id_prueba = intentos.id_prueba
 INNER JOIN candidato ON intentos.id_candidato = candidato.id_candidato
 WHERE candidato.id_candidato = 3 
-AND ( preguntas.id_pregunta % 2 ) = 0
 AND prueba.id_prueba = 1;
 
 --Gestion de empresa --

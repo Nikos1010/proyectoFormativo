@@ -1,24 +1,5 @@
 @charset "UTF-8";
 
-.logotipo {
-  width: 150px;
-  padding: 10px 0;
-}
-
-.iconos-redes-header {
-  width: 20px;
-  margin: 10px 5px;
-}
-
-.banner-video {
-  background-image: url("../img/home/video-bg.jpg");
-  padding: 200px 0;
-  position: relative;
-  text-align: center;
-}
-
-.banner-video .play {
-  width: 80px;
-  height: 80px;
-  position: relative;
+body {
+  background-color: rgb(226, 226, 226);
 }

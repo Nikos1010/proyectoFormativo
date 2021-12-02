@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+.container {
+  margin: 15px 15px;
+}
+
+.btn-group {
+  height: 35px;
+}
+.modal-content {
+  padding: 10px;
+}
