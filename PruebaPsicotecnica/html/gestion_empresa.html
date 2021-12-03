@@ -13,9 +13,8 @@
     <!-- Mi estilo CSS -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/style-ge.css">
-    <link rel="stylesheet" href="../js/app-ge.js">
 
-    <title>Administracion</title>
+    <title>Gestion Empresa</title>
 </head>
 
 <body>
@@ -60,7 +59,8 @@
             </ul>
         </div>
     </nav>
-    <div class="container">
+    <!-- Busqueda -->
+    <div class="container-2">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Ingrese NIT" aria-label="Recipient's username"
                 aria-describedby="button-addon2">
@@ -68,12 +68,12 @@
             <button type="button" class="btn btn-outline-success " data-bs-toggle="modal"
                 data-bs-target="#exampleModal">Agregar</button>
         </div>
-
     </div>
+    <!-- Tabla -->
     <div class="container">
         <div class="table-responsive">
             <table class="table">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th scope="col">NIT</th>
                         <th scope="col">Nombre</th>
@@ -104,8 +104,8 @@
             </table>
         </div>
     </div>
+    <!-- Modal -->
     <div class="container">
-        <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

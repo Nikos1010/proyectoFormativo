@@ -1,11 +1,17 @@
 @charset "UTF-8";
 
 .container-2 {
-  margin: 15px;
+  margin: 15px 15px;
 }
+
 .btn-group {
   height: 35px;
 }
 .modal-content {
   padding: 10px;
+}
+h1 {
+  margin: 15px;
+  font-size: 20px;
+  text-align: center;
 }
