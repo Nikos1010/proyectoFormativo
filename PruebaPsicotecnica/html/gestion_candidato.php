@@ -20,6 +20,13 @@
     <!-- Menu Navegacion -->
     <?php include 'header.php' ?>
 
+    <!-- Llamar base de datos -->
+    <?php include_once "../util/coneccion.php";
+    $sentencia = $bd->query("select * from candidato");
+    $candidato = $sentencia->fetchAll(PDO::FETCH_OBJ);
+    //print_r($candidato);
+    ?>
+
     <!-- Busqueda -->
     <div class="container mt-2">
         <div class="input-group mb-3">
@@ -27,13 +34,6 @@
             <button class="btn btn-outline-primary" type="button" id="button-addon2">Buscar</button>
         </div>
     </div>
-
-    <!-- Llamar base de datos -->
-    <?php include_once "../util/coneccion.php";
-    $sentencia = $bd->query("select * from candidato");
-    $candidato = $sentencia->fetchAll(PDO::FETCH_OBJ);
-    //print_r($candidato);
-    ?>
 
     <!-- Tabla -->
     <div class="container mt-2">

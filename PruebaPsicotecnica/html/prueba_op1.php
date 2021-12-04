@@ -13,14 +13,24 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/style-op1.css">
 
-    <title>Administracion</title>
+    <title>Prueba</title>
 </head>
 
 <body>
     <!-- Menu Navegacion -->
     <?php include '../html/header.php' ?>
+
+    <!-- Llamar base de datos -->
+    <?php include_once "../util/coneccion.php";
+    $sentencia = $bd->query("select candidato.identificacion, candidato.nombre, COUNT(candidato.identificacion) AS numero_pruebas from candidato INNER JOIN intentos ON candidato.id_candidato = intentos.id_candidato
+GROUP BY candidato.identificacion;");
+    $candidato = $sentencia->fetchAll(PDO::FETCH_OBJ);
+    //print_r($candidato);
+    ?>
+
     <!-- Titulo -->
     <h1>Cantidad de Pruebas presentadas por candidato</h1>
+
     <!-- Tabla -->
     <div class="container">
         <div class="table-responsive">
@@ -32,12 +42,18 @@
                         <th scope="col">Numero de Prueba</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">123456789</th>
-                        <td>OSCAR MANUEL DE LOS ROSALES</td>
-                        <td>3</td>
-                    </tr>
+                <tbody class="bg-light">
+                    <?php
+                    foreach ($candidato as $dato) {
+                    ?>
+                        <tr>
+                            <th scope="row"><?php echo $dato->identificacion; ?></th>
+                            <td><?php echo $dato->nombre; ?></td>
+                            <td><?php echo $dato->numero_pruebas ?> </td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
