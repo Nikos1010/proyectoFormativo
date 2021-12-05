@@ -12,6 +12,11 @@ INNER JOIN preguntas ON prueba.id_prueba = preguntas.id_prueba;
 
 -- Insertar respuestas de pregunta del candidato **
 -- ¿¿¿??? Revisar despues
+SELECT * FROM candidato 
+WHERE id_candidato = 1;
+SELECT id_prueba, empresa
+FROM empresa
+INNER JOIN prueba ON empresa.id_empresa = prueba.id_empresa;
 INSERT INTO respuestas ( respuesta, id_pregunta, id_intento) VALUES
 ( 'a', 1, 1), 
 
