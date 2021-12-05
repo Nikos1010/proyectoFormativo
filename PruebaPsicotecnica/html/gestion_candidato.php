@@ -29,10 +29,12 @@
 
     <!-- Busqueda -->
     <div class="container mt-2">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Ingrese Identificacion" aria-label="Recipient's username" aria-describedby="button-addon2">
-            <button class="btn btn-outline-primary" type="button" id="button-addon2">Buscar</button>
-        </div>
+        <form method="POST" action="gestion_candidato/consultar_candidato.php">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" name="codigo" placeholder="Ingrese Identificacion" autofocus required>
+                <input class="btn btn-outline-primary" type="submit" value="Buscar">
+            </div>
+        </form>
     </div>
 
     <!-- Tabla -->
