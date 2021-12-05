@@ -94,23 +94,7 @@ CREATE TABLE candidato
 INSERT INTO empresa ( nit, empresa, representante, direccion, telefono) VALUES
 ( '496337751', 'IKEA', 'ACEVEDO MANRÍQUEZ MARÍA MIREYA', 'Calle 10 No. 9 - 78  Centro', '3127906861'),
 ( '638715039', 'CANON', 'ACEVEDO MEJÍA ENRIQUE', 'Carrera 56A No. 51 - 81', '3139866373'),
-( '521523795', 'LEGO', 'ACOSTA CANTO TOMÁS JOSÉ', 'Carrera 22 No. 17-31', '3119791059'),
-( '215965867', 'SONY', 'ACOSTA GÁMEZ CELINA', 'Carrera 54 No. 68 - 80 Barrio el Prado', '3156700107'),
-( '580844558', 'HAAGEN DASZ', 'AGUILAR FEMUS MARÍA CELIA', 'Calle 59 No. 27 - 35 Barrio Galán', '3191486150'),
-( '329629232', 'WD-40', 'AGUILAR PÉREZ FREDY FRANCISCO', 'Carrera 10A No. 20 - 40  Edificio El Clarín piso 3 Centro La Matuna', '3196260502'),
-( '756133933', 'YAHOO', 'ALARCON LICONA SALOMON', 'Carrera 8  No. 20 - 59', '3188215173'),
-( '894542640', 'PEPSI', 'ALBERTO SEMPERE TORTOSA', 'Calle 20 No. 22 - 27 piso 3 Edificio Cumanday', '3188825728'),
-( '724968925', 'GOOGLE', 'ÁLVARO ORTEGA GONZÁLEZ', 'Carrera 8a No. 7 - 88 /94  Barrio  La Estrella', '3176907287'),
-( '899838970', 'VIRGIN', 'ARIADNA TORMO MARTÍNEZ', 'Carrera  5 No. 3 -74  centro', '3108282765'),
-( '870532501', 'BLACKBERRY', 'CARLOS GINER LAGUARDA', 'Calle 15 No. 9 - 56 centro', '3151192347'),
-( '516449920', 'SPOTYFY', 'CRISTINA SAINZ MARTÍNEZ', 'Calle 25 No. 4 - 38 piso 2  Barrio Pandeyuca', '3147354030'),
-( '739366167', 'ORACLE', 'DANIEL PAREJO PULIDO', 'Calle 28 No. 8 - 69 CENTRO', '3198444859'),
-( '106352472', 'STARBUCKS', 'DARINA STEFANOVA HRISTOVA', 'Carrera 7A No. 32 - 63 piso 2', '3138729049'),
-( '418949532', 'REEBOK', 'DAVID GUTIÉRREZ MÉRIDA', 'Calle 7 No. 5 - 25  Edificio Segunda', '3163143004'),
-( '145633319', 'SKYPE', 'HUGO CANO FERNÁNDEZ', 'Carrera 9  No. 7 - 34', '3190278987'),
-( '615604118', 'AMAZON', 'JOAQUÍN VILA GARCÍA', 'Calle 20 No. 3 - 22', '3150431063'),
-( '686328344', 'Paf Paf', 'JUAN PABLO MANTILLA OLIVEROS', 'Calle 33B  No. 38 - 42  Barrio Barzal', '3146691172'),
-( '542335059', 'Coatlicue', 'LETICIA RODRÍGUEZ MONTES', 'Calle 16 No. 23 - 57 piso 4  Edificio Autoservicio Abraham Delgado', '3198353393');
+( '521523795', 'LEGO', 'ACOSTA CANTO TOMÁS JOSÉ', 'Carrera 22 No. 17-31', '3119791059');
 
 INSERT INTO prueba ( fecha_inicio, fecha_final, cargo, id_empresa) VALUES
 ( '2021-03-01', '2021-03-02', 'Lider Componente', 1),
