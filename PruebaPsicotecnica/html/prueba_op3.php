@@ -19,10 +19,11 @@
 
 <body>
     <!-- Menu Navegacion -->
-    <?php include 'header.php' 
-    
-    //VARIABLES
-    $id_candidato= 
+    <?php include 'header.php';
+    $candidato_id = "";
+    $prueba_id;
+    $intento_max;
+    $e1 = 0;
     ?>
 
     <!-- Contenedor Escoger -->
@@ -37,16 +38,13 @@
                     <form class="row g-3 p-4" method="POST" action="">
                         <div class="col-md-10">
                             <label class="form-label">Identificacion</label>
-                            <div class="input-group mb-3">
-                                <input type="search" class="form-control" name="buscador" placeholder="Ingrese Identificacion" autofocus>
-                                <input class="btn btn-outline-primary" name="enviar" type="submit" value="Buscar">
-                            </div>
+                            <input type="text" class="form-control mb-3" name="buscador" placeholder="Ingrese Identificacion" autofocus>
 
                             <div class="row">
                                 <div class="col-md-8">
                                     <!-- Consultar candidato -->
                                     <?php
-                                    if (isset($_POST['enviar'])) {
+                                    if (isset($_POST['buscar'])) {
                                         $busqueda = $_POST['buscador'];
 
                                         $consulta = $bd->query("SELECT * FROM candidato where  identificacion= '$busqueda'");
@@ -56,7 +54,7 @@
                                             <fieldset disabled>
                                                 <div class="col-md-12 mb-3">
                                                     <label for="inputNombre4" class="form-label ">Nombre</label>
-                                                    <input type="hidden" name="codigo" value="<?php echo $row['id_candidato']; ?>">
+                                                    <input type="hidden" name="codigo" value="<?php $candidato_id = $row['id_candidato']; ?>">
                                                     <input type="text" class="form-control" id="inputNombre4" value="<?php echo $row['nombre']; ?>">
                                                 </div>
                                             </fieldset>
@@ -80,69 +78,100 @@
                                             ?>
                                         </select>
                                     </div>
+                                    <?php if (isset($_POST['buscar'])) {
+                                        $prueba_id = $_REQUEST['cbx'];
+
+                                        $sentencia = $bd->prepare("INSERT INTO intentos (id_candidato,id_prueba) VALUES (?,?);");
+                                        $resultado = $sentencia->execute([$candidato_id, $prueba_id]);
+                                        $consulta = $bd->query("SELECT max(id_intento) AS id_intento FROM intentos");
+
+                                        while ($row = $consulta->fetch()) {
+                                            $intento_max = $row['id_intento'];
+                                        }
+                                    }
+
+                                    ?>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="btn-group ">
                                     <button type="submit" class="btn btn-outline-danger me-4">Limpiar</button>
-                                    <button type="submit" class="btn btn-outline-primary">Consultar</button>
+                                    <button type="submit" class="btn btn-outline-primary" name="buscar">Consultar</button>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+    <?php
+    if (isset($_POST['buscar'])) {
+        $sentencia = $bd->prepare("SELECT * FROM preguntas where id_prueba= ?");
+        $sentencia->execute([$prueba_id]);
+        $pregunta = $sentencia->fetchAll(PDO::FETCH_OBJ);
+    ?>
         <!-- Preguntas -->
-        <div class="container-2 ">
-            <h2 class="mb-3">Preguntas - Respuestas</h2>
-            <form class="row g-3 ">
-                <div class="col-md-12 ">
-                    <label for="inputIdt4" class="form-label">Sigue la secuencia 6, 1, 8, 3, 10, ?</label>
-                </div>
-                <div class="col-md-12 ">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            7
-                        </label>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            Preguntas - Respuestas
+                        </div>
+                        <form class="row g-3 p-4" method="POST" action="">
+                            <?php
+                            foreach ($pregunta as $dato) {
+                            ?>
+                                <div class="col-md-8 ">
+                                    <label for="inputIdt4" class="form-label"><?php echo $dato->pregunta; ?></label>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1"><?php echo $dato->opcion_a; ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                        <label class="form-check-label" for="flexRadioDefault2"><?php echo $dato->opcion_b; ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                                        <label class="form-check-label" for="flexRadioDefault3"><?php echo $dato->opcion_c; ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+                                        <label class="form-check-label" for="flexRadioDefault4"><?php echo $dato->opcion_d; ?></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="btn-group ">
+                                        <input type="button" class="btn btn-outline-primary" name="guardar" value="Guardar">
+                                    </div>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </form>
                     </div>
                 </div>
-                <div class="col-md-12 ">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                            4
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-12 ">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                        <label class="form-check-label" for="flexRadioDefault3">
-                            12
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-12 ">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                        <label class="form-check-label" for="flexRadioDefault4">
-                            5
-                        </label>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="btn-group ">
-                        <button type="submit" class="btn btn-outline-danger me-4">Anterior</button>
-                        <button type="submit" class="btn btn-outline-primary">Siguiente</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            </div>
 
-        <!-- Option 1: Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        </div>
+    <?php
+    }
+
+    ?>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 </html>
