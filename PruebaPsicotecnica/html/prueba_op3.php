@@ -22,7 +22,7 @@
     <?php include 'header.php';
     $candidato_id = "";
     $prueba_id;
-    $intento_max;
+    $intento_max = "";
     $e1 = 0;
     ?>
 
@@ -35,7 +35,7 @@
                         Agregar respuesta candidato
                     </div>
                     <!-- Escoger usuario y empresa -->
-                    <form class="row g-3 p-4" method="POST" action="">
+                    <form class="row g-3 p-4" method="POST" action="prueba/consultar_prueba.php">
                         <div class="col-md-10">
                             <label class="form-label">Identificacion</label>
                             <input type="text" class="form-control mb-3" name="buscador" placeholder="Ingrese Identificacion" autofocus>
@@ -78,7 +78,9 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <?php if (isset($_POST['buscar'])) {
+
+                                    <?php
+                                    if (isset($_POST['buscar'])) {
                                         $prueba_id = $_REQUEST['cbx'];
 
                                         $sentencia = $bd->prepare("INSERT INTO intentos (id_candidato,id_prueba) VALUES (?,?);");
@@ -89,15 +91,16 @@
                                             $intento_max = $row['id_intento'];
                                         }
                                     }
-
                                     ?>
+                                    <input type="hidden" name="intento_max" id="cbx" value="<?php echo $intento_max; ?>">
+                                    
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="btn-group ">
                                     <button type="submit" class="btn btn-outline-danger me-4">Limpiar</button>
-                                    <button type="submit" class="btn btn-outline-primary" name="buscar">Consultar</button>
+                                    <button type="submit" class="btn btn-outline-primary" name="buscar">Consultar</button> 
                                 </div>
                             </div>
                         </div>
@@ -106,69 +109,6 @@
             </div>
         </div>
     </div>
-    <?php
-    if (isset($_POST['buscar'])) {
-        $sentencia = $bd->prepare("SELECT * FROM preguntas where id_prueba= ?");
-        $sentencia->execute([$prueba_id]);
-        $pregunta = $sentencia->fetchAll(PDO::FETCH_OBJ);
-    ?>
-        <!-- Preguntas -->
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header text-center">
-                            Preguntas - Respuestas
-                        </div>
-                        <form class="row g-3 p-4" method="POST" action="">
-                            <?php
-                            foreach ($pregunta as $dato) {
-                            ?>
-                                <div class="col-md-8 ">
-                                    <label for="inputIdt4" class="form-label"><?php echo $dato->pregunta; ?></label>
-                                </div>
-                                <div class="col-md-8 ">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1"><?php echo $dato->opcion_a; ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 ">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2"><?php echo $dato->opcion_b; ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                                        <label class="form-check-label" for="flexRadioDefault3"><?php echo $dato->opcion_c; ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 ">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                                        <label class="form-check-label" for="flexRadioDefault4"><?php echo $dato->opcion_d; ?></label>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="btn-group ">
-                                        <input type="button" class="btn btn-outline-primary" name="guardar" value="Guardar">
-                                    </div>
-                                </div>
-                            <?php
-                            }
-                            ?>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    <?php
-    }
-
-    ?>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
