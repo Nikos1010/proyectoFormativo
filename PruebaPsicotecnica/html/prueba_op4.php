@@ -25,7 +25,7 @@
 
     <!-- Llamar base de datos -->
     <?php include_once "../util/coneccion.php";
-    $sentencia = $bd->query("SELECT prueba.id_prueba, prueba.fecha_inicio, prueba.fecha_final, candidato.nombre, empresa.empresa, prueba.cargo FROM prueba INNER JOIN empresa ON prueba.id_empresa = empresa.id_empresa INNER JOIN intentos ON prueba.id_prueba = intentos.id_prueba INNER JOIN candidato ON intentos.id_candidato = candidato.id_candidato;");
+    $sentencia = $bd->query("SELECT * FROM prueba INNER JOIN empresa ON prueba.id_empresa = empresa.id_empresa INNER JOIN intentos ON prueba.id_prueba = intentos.id_prueba INNER JOIN candidato ON intentos.id_candidato = candidato.id_candidato;");
     $prueba = $sentencia->fetchAll(PDO::FETCH_OBJ);
     //print_r($prueba);
     ?>
@@ -39,6 +39,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Fecha de inicio</th>
                         <th scope="col">Fecha de fin</th>
+                        <th scope="col">Identifiacion</th>
                         <th scope="col">Candidato</th>
                         <th scope="col">Empresa</th>
                         <th scope="col">Cargo</th>
@@ -52,6 +53,7 @@
                             <th scope="row"><?php echo $dato->id_prueba; ?></th>
                             <td><?php echo $dato->fecha_inicio; ?></td>
                             <td><?php echo $dato->fecha_final; ?></td>
+                            <td><?php echo $dato->identificacion;?></td>
                             <td><?php echo $dato->nombre; ?></td>
                             <td><?php echo $dato->empresa; ?></td>
                             <td><?php echo $dato->cargo; ?></td>

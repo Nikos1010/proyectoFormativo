@@ -28,15 +28,15 @@
                     <div class="card">
                         <div class="card-header text-center">Preguntas - Respuestas</div>
 
-                        <form class="row g-3 p-4" method="post" action="holii.php" id='form1' name='form1'>
 
-                            <?php
-                            $prueba_id_2 = $prueba_id;
-                            $intento_max_2 = $prueba_id;
-                            foreach ($pregunta as $dato) {
-                                $id_pregunta = $dato->id_pregunta;
+                        <?php
+                        $prueba_id_2 = $prueba_id;
+                        $intento_max_2 = $prueba_id;
+                        foreach ($pregunta as $dato) {
+                            $id_pregunta = $dato->id_pregunta;
+                        ?>
 
-                            ?>
+                            <form class="row g-3 p-4" method="post" action="holii.php" id='form1' name='form1'>
 
                                 <div class="col-md-8 ">
                                     <label for="inputIdt4" class="form-label"><?php echo $dato->pregunta; ?></label>
@@ -72,15 +72,15 @@
                                         <input type="hidden" name="prueba_id" id="cbx" value="<?php echo $prueba_id; ?>">
                                         <input type="hidden" name="id_pregunta" id="cbx1" value="<?php echo $id_pregunta; ?>">
                                         <input type="hidden" name="intento_max" id="cbx2" value="<?php echo $intento_max; ?>">
-                                        
+
                                     </div>
                                 </div>
 
-                            <?php
-                            }
-                            ?>
+                            </form>
+                        <?php
+                        }
+                        ?>
 
-                        </form>
 
                     </div>
                 </div>
@@ -90,15 +90,14 @@
 
 
         <script type="text/javascript">
-            
             $(document).ready(function() {
                 $('#guardarbtn').on('click', function(event) {
                     // using this page stop being refreshing 
                     event.preventDefault();
 
                     $.ajax({
-                        type: $(this).attr('method'),
-                        url: $(this).attr('action'),
+                        type: "post",
+                        url: "holii.php?action=",
                         data: $(this).serialize(),
                         success: function(data) {
                             alert($(this).serialize());

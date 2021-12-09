@@ -36,6 +36,7 @@
             <table class="table">
                 <thead class="table-dark">
                     <tr>
+                        <th scope="col">Prueba</th>
                         <th scope="col">#</th>
                         <th scope="col">Cargo</th>
                         <th scope="col">Pregunta</th>
@@ -50,7 +51,8 @@
                     foreach ($prueba as $dato) {
                     ?>
                         <tr>
-                            <th scope="row"><?php echo $dato->numero; ?></th>
+                            <th><?php echo $dato->id_prueba; ?></th>
+                            <th><?php echo $dato->numero; ?></th>
                             <td><?php echo $dato->cargo; ?></td>
                             <td><?php echo $dato->pregunta; ?></td>
                             <td><?php echo $dato->opcion_a; ?></td>
