@@ -37,6 +37,7 @@
                                 <div class="col-md-6">
                                     <label for="forTxtCandito" class="form-label">Nombre Candidato</label>
                                     <input type="text" readonly class="form-control  mb-3" name="nameTxtCandito" id="idTxtCandidato" placeholder="Candidato">
+                                    <input type="hidden" name="codigo" id="idLblCandidato" value="">
                                 </div>
                             </div>
 
@@ -74,28 +75,8 @@
 
 
             <!-- Contenedor Escoger -->
-            <div class="container mt-4">
-                <div class="row">
+            <div class="container mt-4" id="idPreguntas">
 
-                    <!-- column y la card -->
-                    <div class="col-12">
-                        <div class="card">
-
-                            <!-- card head -->
-                            <div class="card-header text-center">
-                                Preguntas
-                            </div>
-
-                            <!-- formulario -->
-                            <div class="card-body" id="idPreguntas">
-                                <!-- preguntas lista -->
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
             </div>
 
 
@@ -118,6 +99,29 @@
             consultarPreguntas();
         });
 
+        //Action button guardar respuesta
+        $('#idBtnGuardar').click(function(e) {
+            guardarRespuesta();
+        });
+
+        //insertar la respues del candidato <<<<<<<<<<
+        function guardarRespuesta() {
+            var datos = new FormData();
+
+            datos.append('respuesta', $("input[name='nameRespuesta']:checked").val());
+            datos.append('id_pregunta', $('#idHeadCard').val());
+
+            $.ajax({
+                type: "post",
+                url: "op3_consultas.php?accion=respuestas",
+                data: datos,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert(response);
+                }
+            });
+        }
 
         //consultar candidato
         function consultarCandidato() {
@@ -126,8 +130,8 @@
             datos.append('id', $('#idTxtId').val());
 
             $.getJSON("op3_consultas.php?consultarCandidato=" + datos.get('id'), function(registros) {
-                console.log(registros);
                 $('#idTxtCandidato').val(registros[0]['nombre']);
+                document.getElementById('idLblCandidato').setAttribute('value', registros[0]['id_candidato']);
             });
         }
 
@@ -153,76 +157,107 @@
             });
         }
 
+
+        //funcion consultar las preguntas
         function consultarPreguntas() {
 
             var datos = new FormData();
-
-            datos.append('id_prueba', "2");
-            datos.append('id_candidato', "1");
-
-            console.log(datos.get("id_prueba"));
+            datos.append('id_prueba', $('#idNumPrueba').val());
 
             $.ajax({
                 type: "post",
-                url: "op3_consultas.php?accion=consultarPreguntas",
+                url: "op3_consultas.php?accion=preguntas",
                 data: datos,
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
+
                     var preguntas = [];
 
-                    $.each(response, function(llave, valor) {
-
+                    $.each(JSON.parse(response), function(llave, valor) {
                         if (llave => 0) {
-                            var template;
 
-                            template += '<form action="" method="post"> ';
+                            var template = ' <div class="row">';
+                            template += "<!-- column de la card -->";
+                            template += ' <div class="col-12">';
+                            template += ' <div class="card">';
+                            template += "";
+                            template += "   <!-- card head -->";
+                            template += '   <div class="card-header text-center" id="idHeadCard"  value="' + valor.id_pregunta + '"> ';
+                            template += '     Pregunta ' + valor.numero;
+                            template += "    </div>";
+                            template += "";
+                            template += "   <!-- formulario -->";
+                            template += '   <div class="card-body" id="idPreguntas">';
+                            template += '   <form action="" method="post"> ';
                             template += '';
                             template += '   <div class="row"> ';
                             template += '       <div class="col-12">';
                             template += '            <label for="inputIdt4" id="idLblPregunta" class="form-label">' + valor.pregunta + "</label>";
-                            template += '        </div>';
-                            template += '    </div>';
+                            template += "        </div>";
+                            template += "    </div>";
                             template += '';
                             template += '  <fieldset class="row mb-3">';
                             template += '      <div class="col-sm-12">';
                             template += '            <div class="form-check">';
                             template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp1" value="' + valor.opcion_a + '" checked>';
-                            template += '               <label class="form-check-label" for="gridRadios1">' + valor.opcion_a + '</label>';
-                            template += '          </div>';
+                            template += '               <label class="form-check-label" for="gridRadios1">' + valor.opcion_a + "</label>";
+                            template += "          </div>";
                             template += '            <div class="form-check">';
                             template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp2" value="' + valor.opcion_b + '">';
-                            template += '               <label class="form-check-label" for="gridRadios2">' + valor.opcion_b + '</label>';
-                            template += '           </div>';
+                            template += '               <label class="form-check-label" for="gridRadios2">' + valor.opcion_b + "</label>";
+                            template += "          </div>";
                             template += '           <div class="form-check">';
                             template += '              <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp3" value="' + valor.opcion_c + '">';
-                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_c + '</label>';
-                            template += '             </div>';
+                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_c + "</label>";
+                            template += "          </div>";
                             template += '             <div class="form-check">';
                             template += '                 <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp4" value="' + valor.opcion_d + '">';
-                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_d + '</label>';
-                            template += '             </div>';
-                            template += '         </div>';
+                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_d + "</label>";
+                            template += "          </div>";
+                            template += "       </div>";
                             template += '     </fieldset>';
                             template += '';
                             template += '     <div class="col-md-5">';
                             template += '        <div class="btn-group ">';
                             template += '             <button type="button" class="btn btn-outline-primary" name="guardar" id="idBtnGuardar">Guardar</button>';
-                            template += '         </div>';
-                            template += '     </div>';
-                            template += '</form>';
+                            template += "      </div>";
+                            template += "    </div>";
+                            template += "</form>";
+                            template += " </div>";
+                            template += "  </div>";
+                            template += " </div>";
+                            template += " </div>";
 
                             preguntas.push(template);
-                        }
-                    });
 
+                        };
+                    });
                     $("#idPreguntas").append(preguntas.join(""));
-                   // console.log(registros);
                 }
             });
 
+            crearIntento();
+        }
 
+        function crearIntento() {
+            var datos = new FormData();
+            datos.append('id_prueba', $('#idNumPrueba').val());
+            datos.append('id_candidato', $('#idLblCandidato').val());
+
+            console.log(datos.get('id_prueba'));
+            console.log(datos.get('id_candidato'));
+
+            $.ajax({
+                type: "post",
+                url: "index.php?accion=intento",
+                data: datos,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                }
+            });
         }
     </script>
 

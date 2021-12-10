@@ -12,42 +12,63 @@ if (isset($_GET["consultarCandidato"])) {
     exit();
 }
 
-//Consultar la lista de empresas
-$sentenciaSQL = $bd->prepare("Select * From empresa");
-$sentenciaSQL->execute();
-$listaEpresas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-echo json_encode($listaEpresas);
-exit();
 
-
-//mostar preguntas
-if (isset($_GET['accion']) == "consultarPreguntas") {
-
-    $id_prueba = $_GET["id_prueba"];
-    echo "ingreso a la consulta";
+//funcion de consultar preguntas
+if (isset($_GET['accion']) == "preguntas") {
+    $id_prueba = $_POST["id_prueba"];
 
     //consultar la lista de las preguntas de la prueba
     $sentenciaSQL = $bd->prepare("SELECT * FROM preguntas WHERE id_prueba =" . $id_prueba);
-    $sentenciaSQL->bindParam(':id_prueba', $id_prueba);
     $sentenciaSQL->execute();
     $listaPreguntas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($listaPreguntas);
     exit();
 }
 
+//crear nuevo intento
+if (isset($_GET['accion']) == "intento") {
 
-if (isset($_GET['accion']) == "guardarRespuesta") {
-    //crear un intento
-    $sentenciaSQL = $bd->prepare("INSERT INTO intentos (id_candidato, id_pregunta) VALUES (:id_candiadto,:id_prueba);");
-    $sentenciaSQL->bindParam(':id_candidato', $id_candidato);
-    $sentenciaSQL->bindParam(':id_prueba', $id_prueba);
-    $sentenciaSQL->execute();
+    $id_prueba = $_GET["id_prueba"];
+    $id_candidato = $_GET["id_candidato"];
 
-    //obtener id utlimo inserdado en intento
-    $sentenciaSQL = $bd->prepare("SELECT MAX(id_intento) from intentos;");
-    $sentenciaSQL->execute();
-    $id_intento = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+    //Crear un nuevo intento
+    $sentenciaSQL2 = $bd->prepare("INSERT INTO intentos (id_candidato, id_prueba) VALUES ( :id_candidato,:id_prueba);");
+    $sentenciaSQL2->bindParam(':id_candidato', $id_candidato);
+    $sentenciaSQL2->bindParam(':id_prueba', $id_prueba);
+    $sentenciaSQL2->execute();
     exit();
 }
+
+
+//guardamos la respuesta
+if (isset($_GET['accion']) == "respuestas") {
+
+    $respuesta = $_POST["respuesta"];
+    $id_pregunta = $_POST["id_pregunta"];
+    $id_intento;
+
+    //obtener id utlimo insertado en intento
+    $sentenciaSQL = $bd->prepare("SELECT MAX(id_intento) as ultimo from intentos;");
+    $sentenciaSQL->execute();
+    $id_intento = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+    $json = json_decode($id_intento);
+    $id_intento = $json[0]->ultimo;
+
+
+    //insertar una respuesta
+    $sentenciaSQL = $bd->prepare("INSERT INTO respuestas ( respuesta, id_pregunta, id_intento) VALUES ( :respuesta,:id_pregunta, :id_intento);");
+    $sentenciaSQL->bindParam(':respuesta', $respuesta);
+    $sentenciaSQL->bindParam(':id_pregunta', $id_pregunta);
+    $sentenciaSQL->bindParam(':id_intento', $id_intento);
+    $sentenciaSQL->execute();
+    exit();
+}
+
+
+//Consultar la lista de empresas
+$sentenciaSQL = $bd->prepare("Select * From empresa");
+$sentenciaSQL->execute();
+$listaEpresas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+echo json_encode($listaEpresas);
 
 ?>
