@@ -111,6 +111,9 @@
             datos.append('respuesta', $("input[name='nameRespuesta']:checked").val());
             datos.append('id_pregunta', $('#idHeadCard').val());
 
+            console.log(datos.get("respuesta"));
+            console.log(datos.get("id_pregunta"));
+
             $.ajax({
                 type: "post",
                 url: "op3_consultas.php?accion=respuestas",
@@ -163,6 +166,7 @@
 
             var datos = new FormData();
             datos.append('id_prueba', $('#idNumPrueba').val());
+            datos.append('id_candidato', $('#idLblCandidato').val());
 
             $.ajax({
                 type: "post",
@@ -171,7 +175,6 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-
                     var preguntas = [];
 
                     $.each(JSON.parse(response), function(llave, valor) {
@@ -200,7 +203,7 @@
                             template += '  <fieldset class="row mb-3">';
                             template += '      <div class="col-sm-12">';
                             template += '            <div class="form-check">';
-                            template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp1" value="' + valor.opcion_a + '" checked>';
+                            template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp1" value="' + valor.opcion_a + '">';
                             template += '               <label class="form-check-label" for="gridRadios1">' + valor.opcion_a + "</label>";
                             template += "          </div>";
                             template += '            <div class="form-check">';
@@ -220,45 +223,23 @@
                             template += '';
                             template += '     <div class="col-md-5">';
                             template += '        <div class="btn-group ">';
-                            template += '             <button type="button" class="btn btn-outline-primary" name="guardar" id="idBtnGuardar">Guardar</button>';
+                            template += '             <button type="button" class="btn btn-success" id="idBtnGuardar">Guardar</button>';
                             template += "      </div>";
                             template += "    </div>";
                             template += "</form>";
                             template += " </div>";
                             template += "  </div>";
                             template += " </div>";
-                            template += " </div>";
-
+                            template += " </div>";                           
+                            
                             preguntas.push(template);
-
                         };
                     });
                     $("#idPreguntas").append(preguntas.join(""));
                 }
             });
-
-            crearIntento();
         }
 
-        function crearIntento() {
-            var datos = new FormData();
-            datos.append('id_prueba', $('#idNumPrueba').val());
-            datos.append('id_candidato', $('#idLblCandidato').val());
-
-            console.log(datos.get('id_prueba'));
-            console.log(datos.get('id_candidato'));
-
-            $.ajax({
-                type: "post",
-                url: "index.php?accion=intento",
-                data: datos,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log(response);
-                }
-            });
-        }
     </script>
 
 

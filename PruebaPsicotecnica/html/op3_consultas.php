@@ -16,35 +16,34 @@ if (isset($_GET["consultarCandidato"])) {
 //funcion de consultar preguntas
 if (isset($_GET['accion']) == "preguntas") {
     $id_prueba = $_POST["id_prueba"];
+    $id_candidato = $_POST["id_candidato"];
+
+
+   //Crear un nuevo intento
+   $sentenciaSQL2 = $bd->prepare("INSERT INTO intentos (id_candidato, id_prueba) VALUES (:id_candidato,:id_prueba);");
+   $sentenciaSQL2->bindParam(':id_candidato', $id_candidato);
+   $sentenciaSQL2->bindParam(':id_prueba', $id_prueba);
+   $sentenciaSQL2->execute();
+   
 
     //consultar la lista de las preguntas de la prueba
     $sentenciaSQL = $bd->prepare("SELECT * FROM preguntas WHERE id_prueba =" . $id_prueba);
     $sentenciaSQL->execute();
     $listaPreguntas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+ 
+
     echo json_encode($listaPreguntas);
     exit();
 }
 
-//crear nuevo intento
-if (isset($_GET['accion']) == "intento") {
-
-    $id_prueba = $_GET["id_prueba"];
-    $id_candidato = $_GET["id_candidato"];
-
-    //Crear un nuevo intento
-    $sentenciaSQL2 = $bd->prepare("INSERT INTO intentos (id_candidato, id_prueba) VALUES ( :id_candidato,:id_prueba);");
-    $sentenciaSQL2->bindParam(':id_candidato', $id_candidato);
-    $sentenciaSQL2->bindParam(':id_prueba', $id_prueba);
-    $sentenciaSQL2->execute();
-    exit();
-}
 
 
 //guardamos la respuesta
 if (isset($_GET['accion']) == "respuestas") {
 
-    $respuesta = $_POST["respuesta"];
-    $id_pregunta = $_POST["id_pregunta"];
+    $respuesta = $_POST['respuesta'];
+    $id_pregunta = $_POST['id_pregunta'];
     $id_intento;
 
     //obtener id utlimo insertado en intento
