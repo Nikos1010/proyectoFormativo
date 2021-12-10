@@ -65,6 +65,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                         <button type="button" class="btn btn-danger" id="idBtnLimpiar">Limpiar</button>
                                         <button type="button" class="btn btn-success" id="idBtnConsultar">Consultar</button>
+                                        <input type="hidden" name="codigo" id="idNumPregunta" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -92,6 +93,8 @@
         //tomar y poner el value de una seleccion de un combobox
         $("#idCboxEmpresa").change(function() {
             $('#idNumPrueba').val($("#idCboxEmpresa").val());
+            $("#idPreguntas").empty();
+            document.getElementById('idNumPregunta').setAttribute('value', 0);
         });
 
         //Action button buscar candidato
@@ -164,6 +167,7 @@
             var datos = new FormData();
             datos.append('id_prueba', $('#idNumPrueba').val());
             datos.append('id_candidato', $('#idLblCandidato').val());
+            datos.append('numPregunta', $('#idNumPregunta').val());
 
             $.ajax({
                 type: "post",
@@ -174,66 +178,74 @@
                 success: function(response) {
                     var preguntas = [];
 
-                    $.each(JSON.parse(response), function(llave, valor) {
-                        if (llave => 0) {
+                    // $.each(JSON.parse(response), function(llave, valor) {
+                    var array = JSON.parse(response);
+                    var numPregunta = datos.get('numPregunta');
 
-                            var template = ' <div class="row">';
-                            template += "<!-- column de la card -->";
-                            template += ' <div class="col-12">';
-                            template += ' <div class="card">';
-                            template += "";
-                            template += "   <!-- card head -->";
-                            template += '   <div class="card-header text-center"> ';
-                            template += '     Pregunta ' + valor.numero;
-                            template += "    </div>";
-                            template += '  <input type="hidden" name="codigo" id="idHeadCard" value="' + valor.id_pregunta + '">';
-                            template += "";
-                            template += "   <!-- formulario -->";
-                            template += '   <div class="card-body" id="idPreguntas">';
-                            template += '   <form action="" method="post"> ';
-                            template += '';
-                            template += '   <div class="row"> ';
-                            template += '       <div class="col-12">';
-                            template += '            <label for="inputIdt4" id="idLblPregunta" class="form-label">' + valor.pregunta + "</label>";
-                            template += "        </div>";
-                            template += "    </div>";
-                            template += '';
-                            template += '  <fieldset class="row mb-3">';
-                            template += '      <div class="col-sm-12">';
-                            template += '            <div class="form-check">';
-                            template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp1" value="' + valor.opcion_a + '">';
-                            template += '               <label class="form-check-label" for="gridRadios1">' + valor.opcion_a + "</label>";
-                            template += "          </div>";
-                            template += '            <div class="form-check">';
-                            template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp2" value="' + valor.opcion_b + '">';
-                            template += '               <label class="form-check-label" for="gridRadios2">' + valor.opcion_b + "</label>";
-                            template += "          </div>";
-                            template += '           <div class="form-check">';
-                            template += '              <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp3" value="' + valor.opcion_c + '">';
-                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_c + "</label>";
-                            template += "          </div>";
-                            template += '             <div class="form-check">';
-                            template += '                 <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp4" value="' + valor.opcion_d + '">';
-                            template += '                 <label class="form-check-label" for="gridRadios2">' + valor.opcion_d + "</label>";
-                            template += "          </div>";
-                            template += "       </div>";
-                            template += '     </fieldset>';
-                            template += '';
-                            template += '     <div class="col-md-5">';
-                            template += '        <div class="btn-group ">';
-                            template += '             <button type="button" class="btn btn-success" onclick="guardarRespuesta()" id="idBtnGuardar">Guardar</button>';
-                            template += "      </div>";
-                            template += "    </div>";
-                            template += "</form>";
-                            template += " </div>";
-                            template += "  </div>";
-                            template += " </div>";
-                            template += " </div>";
+                    if (numPregunta < array.length) {
 
-                            preguntas.push(template);
-                        };
-                    });
-                    $("#idPreguntas").append(preguntas.join(""));
+                        var template = ' <div class="row">';
+                        template += "<!-- column de la card -->";
+                        template += ' <div class="col-12">';
+                        template += ' <div class="card">';
+                        template += "";
+                        template += "   <!-- card head -->";
+                        template += '   <div class="card-header text-center"> ';
+                        template += '     Pregunta ' + array[numPregunta]["numero"];
+                        template += "    </div>";
+                        template += '  <input type="hidden" name="codigo" id="idHeadCard" value="' + array[numPregunta]["id_pregunta"] + '">';
+                        template += "";
+                        template += "   <!-- formulario -->";
+                        template += '   <div class="card-body" id="idPreguntas">';
+                        template += '   <form action="" method="post"> ';
+                        template += '';
+                        template += '   <div class="row"> ';
+                        template += '       <div class="col-12">';
+                        template += '            <label for="inputIdt4" id="idLblPregunta" class="form-label">' + array[numPregunta]["pregunta"] + "</label>";
+                        template += "        </div>";
+                        template += "    </div>";
+                        template += '';
+                        template += '  <fieldset class="row mb-3">';
+                        template += '      <div class="col-sm-12">';
+                        template += '            <div class="form-check">';
+                        template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp1" value="' + array[numPregunta]["opcion_a"] + '">';
+                        template += '               <label class="form-check-label" for="gridRadios1">' + array[numPregunta]["opcion_a"] + "</label>";
+                        template += "          </div>";
+                        template += '            <div class="form-check">';
+                        template += '               <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp2" value="' + array[numPregunta]["opcion_b"] + '">';
+                        template += '               <label class="form-check-label" for="gridRadios2">' + array[numPregunta]["opcion_b"] + "</label>";
+                        template += "          </div>";
+                        template += '           <div class="form-check">';
+                        template += '              <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp3" value="' + array[numPregunta]["opcion_c"] + '">';
+                        template += '                 <label class="form-check-label" for="gridRadios2">' +array[numPregunta]["opcion_c"]  + "</label>";
+                        template += "          </div>";
+                        template += '             <div class="form-check">';
+                        template += '                 <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp4" value="' +array[numPregunta]["opcion_d"] + '">';
+                        template += '                 <label class="form-check-label" for="gridRadios2">' + array[numPregunta]["opcion_d"] + "</label>";
+                        template += "          </div>";
+                        template += "       </div>";
+                        template += '     </fieldset>';
+                        template += '';
+                        template += '     <div class="col-md-5">';
+                        template += '        <div class="btn-group ">';
+                        template += '             <button type="button" class="btn btn-success" onclick="guardarRespuesta()" id="idBtnGuardar">Guardar</button>';
+                        template += "      </div>";
+                        template += "    </div>";
+                        template += "</form>";
+                        template += " </div>";
+                        template += "  </div>";
+                        template += " </div>";
+                        template += " </div>";
+
+
+                        var numActal =datos.get('numPregunta');
+                        var numNew = parseFloat(numActal) + 1;
+                        document.getElementById('idNumPregunta').setAttribute('value', numNew);
+
+                        preguntas.push(template);
+                        $("#idPreguntas").append(preguntas.join(""));
+                    };
+                    // });
                 }
             });
         }
