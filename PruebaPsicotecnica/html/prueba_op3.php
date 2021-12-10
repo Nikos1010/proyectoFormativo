@@ -99,10 +99,7 @@
             consultarPreguntas();
         });
 
-        //Action button guardar respuesta
-        $('#idBtnGuardar').click(function(e) {
-            guardarRespuesta();
-        });
+
 
         //insertar la respues del candidato <<<<<<<<<<
         function guardarRespuesta() {
@@ -121,7 +118,7 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    alert(response);
+                    console.log(response);
                 }
             });
         }
@@ -186,9 +183,10 @@
                             template += ' <div class="card">';
                             template += "";
                             template += "   <!-- card head -->";
-                            template += '   <div class="card-header text-center" id="idHeadCard"  value="' + valor.id_pregunta + '"> ';
+                            template += '   <div class="card-header text-center"> ';
                             template += '     Pregunta ' + valor.numero;
                             template += "    </div>";
+                            template += '  <input type="hidden" name="codigo" id="idHeadCard" value="' + valor.id_pregunta + '">';
                             template += "";
                             template += "   <!-- formulario -->";
                             template += '   <div class="card-body" id="idPreguntas">';
@@ -223,15 +221,15 @@
                             template += '';
                             template += '     <div class="col-md-5">';
                             template += '        <div class="btn-group ">';
-                            template += '             <button type="button" class="btn btn-success" id="idBtnGuardar">Guardar</button>';
+                            template += '             <button type="button" class="btn btn-success" onclick="guardarRespuesta()" id="idBtnGuardar">Guardar</button>';
                             template += "      </div>";
                             template += "    </div>";
                             template += "</form>";
                             template += " </div>";
                             template += "  </div>";
                             template += " </div>";
-                            template += " </div>";                           
-                            
+                            template += " </div>";
+
                             preguntas.push(template);
                         };
                     });
@@ -239,7 +237,6 @@
                 }
             });
         }
-
     </script>
 
 
