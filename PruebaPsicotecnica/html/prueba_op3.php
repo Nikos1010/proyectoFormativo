@@ -116,7 +116,7 @@
 
             $.ajax({
                 type: "post",
-                url: "op3_consultas.php?accion=respuestas",
+                url: "op3_respuesta.php?accion=respuestas",
                 data: datos,
                 processData: false,
                 contentType: false,
@@ -217,10 +217,10 @@
                         template += "          </div>";
                         template += '           <div class="form-check">';
                         template += '              <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp3" value="' + array[numPregunta]["opcion_c"] + '">';
-                        template += '                 <label class="form-check-label" for="gridRadios2">' +array[numPregunta]["opcion_c"]  + "</label>";
+                        template += '                 <label class="form-check-label" for="gridRadios2">' + array[numPregunta]["opcion_c"] + "</label>";
                         template += "          </div>";
                         template += '             <div class="form-check">';
-                        template += '                 <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp4" value="' +array[numPregunta]["opcion_d"] + '">';
+                        template += '                 <input class="form-check-input" type="radio" name="nameRespuesta" id="idRdOp4" value="' + array[numPregunta]["opcion_d"] + '">';
                         template += '                 <label class="form-check-label" for="gridRadios2">' + array[numPregunta]["opcion_d"] + "</label>";
                         template += "          </div>";
                         template += "       </div>";
@@ -238,7 +238,7 @@
                         template += " </div>";
 
 
-                        var numActal =datos.get('numPregunta');
+                        var numActal = datos.get('numPregunta');
                         var numNew = parseFloat(numActal) + 1;
                         document.getElementById('idNumPregunta').setAttribute('value', numNew);
 
