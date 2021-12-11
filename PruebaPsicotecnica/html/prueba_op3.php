@@ -102,6 +102,14 @@
             consultarPreguntas();
         });
 
+        //Action button limpiar
+        $('#idBtnLimpiar').click(function(e) {
+            $("#idPreguntas").empty();
+            $('#idTxtCandidato').val("");
+            $('#idTxtId').val("");
+            document.getElementById('idCboxEmpresa').selectedIndex;
+        });
+
 
 
         //insertar la respues del candidato <<<<<<<<<<
@@ -121,9 +129,11 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
+                    alert("Se guardo la respuesta: < " + datos.get("respuesta") + " > de la pregunta: < " + datos.get("id_pregunta") + " >");
                 }
             });
+            $("#idPreguntas").empty();
+            consultarPreguntas();
         }
 
         //consultar candidato
