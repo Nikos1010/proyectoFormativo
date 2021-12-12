@@ -7,12 +7,15 @@ if (isset($_GET['accion']) == "preguntas") {
     if (!is_null($_POST["id_prueba"]) && !is_null($_POST["id_candidato"])) {
         $id_prueba = $_POST["id_prueba"];
         $id_candidato = $_POST["id_candidato"];
+        $id_intento = $_POST["id_intento"];
 
         //Crear un nuevo intento
-        $sentenciaSQL = $bd->prepare("INSERT INTO intentos (id_candidato, id_prueba) VALUES (:id_candidato,:id_prueba);");
-        $sentenciaSQL->bindParam(':id_candidato', $id_candidato);
-        $sentenciaSQL->bindParam(':id_prueba', $id_prueba);
-        $sentenciaSQL->execute();
+        if ($id_intento == '0') {
+            $sentenciaSQL = $bd->prepare("INSERT INTO intentos (id_candidato, id_prueba) VALUES (:id_candidato,:id_prueba);");
+            $sentenciaSQL->bindParam(':id_candidato', $id_candidato);
+            $sentenciaSQL->bindParam(':id_prueba', $id_prueba);
+            $sentenciaSQL->execute();
+        }
 
         //consultar la lista de las preguntas de la prueba
         $sentenciaSQL2 = $bd->prepare("SELECT * FROM preguntas WHERE id_prueba =" . $id_prueba);

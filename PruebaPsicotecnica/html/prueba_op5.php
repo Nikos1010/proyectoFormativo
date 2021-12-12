@@ -88,7 +88,7 @@
     </div>
     <?php
     if (isset($_POST['buscar'])) {
-        $sentencia = $bd->query("SELECT numero, pregunta, respuestas.respuesta FROM preguntas INNER JOIN prueba ON preguntas.id_prueba = prueba.id_prueba INNER JOIN respuestas ON preguntas.id_pregunta = respuestas.id_respuesta INNER JOIN intentos ON prueba.id_prueba = intentos.id_prueba INNER JOIN candidato ON intentos.id_candidato = candidato.id_candidato WHERE candidato.id_candidato = '$candidato_id' AND intentos.id_intento = '$intento_id';");
+        $sentencia = $bd->query("SELECT candidato.nombre, prueba.id_prueba, preguntas.numero, preguntas.pregunta, respuestas.respuesta FROM candidato INNER JOIN intentos ON candidato.id_candidato = intentos.id_candidato INNER JOIN respuestas ON intentos.id_intento = respuestas.id_intento INNER JOIN preguntas ON respuestas.id_pregunta = preguntas.id_pregunta INNER JOIN prueba ON preguntas.id_prueba = prueba.id_prueba WHERE candidato.id_candidato = '$candidato_id' AND intentos.id_intento = '$intento_id';");
         $pregunta = $sentencia->fetchAll(PDO::FETCH_OBJ);
     }
     ?>

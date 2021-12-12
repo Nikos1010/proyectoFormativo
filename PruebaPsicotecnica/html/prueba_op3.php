@@ -63,9 +63,10 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                        <button type="button" class="btn btn-danger" id="idBtnLimpiar">Limpiar</button>
+                                        <button type="submit" class="btn btn-danger" id="idBtnLimpiar">Limpiar</button>
                                         <button type="button" class="btn btn-success" id="idBtnConsultar">Consultar</button>
                                         <input type="hidden" name="codigo" id="idNumPregunta" value="0">
+                                        <input type="hidden" name="codigo" id="idUltimoIntento" value="0">
                                     </div>
                                 </div>
                             </div>
@@ -102,13 +103,6 @@
             consultarPreguntas();
         });
 
-        //Action button limpiar
-        $('#idBtnLimpiar').click(function(e) {
-            $("#idPreguntas").empty();
-            $('#idTxtCandidato').val("");
-            $('#idTxtId').val("");
-            document.getElementById('idCboxEmpresa').selectedIndex;
-        });
 
         //insertar la respues del candidato <<<<<<<<<<
         function guardarRespuesta() {
@@ -176,6 +170,7 @@
             datos.append('id_prueba', $('#idNumPrueba').val());
             datos.append('id_candidato', $('#idLblCandidato').val());
             datos.append('numPregunta', $('#idNumPregunta').val());
+            datos.append('id_intento', $('#idUltimoIntento').val());
 
             $.ajax({
                 type: "post",
@@ -256,6 +251,7 @@
                     // });
                 }
             });
+            document.getElementById('idUltimoIntento').setAttribute('value', '1');
         }
     </script>
 
