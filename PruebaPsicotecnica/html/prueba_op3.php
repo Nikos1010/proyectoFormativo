@@ -97,7 +97,7 @@
             document.getElementById('idNumPregunta').setAttribute('value', 0);
         });
 
-        //Action button buscar candidato
+        //Action button buscar preguntas
         $('#idBtnConsultar').click(function(e) {
             consultarPreguntas();
         });
@@ -109,8 +109,6 @@
             $('#idTxtId').val("");
             document.getElementById('idCboxEmpresa').selectedIndex;
         });
-
-
 
         //insertar la respues del candidato <<<<<<<<<<
         function guardarRespuesta() {
